@@ -12,12 +12,11 @@
     <nav class="flex justify-between items-center py-4 px-8 bg-gray-800">
         <div class="text-lg font-bold">Law Office</div>
         <ul class="flex space-x-4">
-            <li><a href="index.html" class="hover:text-gray-400">Home</a></li>
-            <li><a href="#" class="hover:text-gray-400">About</a></li>
-            <li><a href="reservation.html" class="hover:text-gray-400">reservation</a></li>
-            <li><a href="regestration.html" class="hover:text-gray-400">regestration</a></li>
+            <li><a href="../views/index.php" class="hover:text-gray-400">Home</a></li>
+            <li><a href="../views/reservation.php" class="hover:text-gray-400">reservation</a></li>
+            <li><a href="../views/regestration.php" class="hover:text-gray-400">regestration</a></li>
         </ul>
-        <a href="login.html" class="bg-yellow-500 text-gray-900 px-4 py-2 rounded">Login</a>
+        <a href="../views/login.php" class="bg-yellow-500 text-gray-900 px-4 py-2 rounded">Login</a>
     </nav>
     <div class="min-h-screen flex items-center justify-center py-12 px-4">
         <div class="bg-gray-800 p-8 rounded-lg shadow-xl w-full max-w-md">

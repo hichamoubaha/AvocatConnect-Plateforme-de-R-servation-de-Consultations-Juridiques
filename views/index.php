@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Law Office</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../src/style.css">
 </head>
 <body class="bg-gray-900 text-white">
 
@@ -13,12 +13,12 @@
     <nav class="flex justify-between items-center py-4 px-8 bg-gray-800">
         <div class="text-lg font-bold">Law Office</div>
         <ul class="flex space-x-4">
-            <li><a href="index.html" class="hover:text-gray-400">Home</a></li>
+            <li><a href="../views/index.php" class="hover:text-gray-400">Home</a></li>
             <li><a href="#about-section" class="hover:text-gray-400">About</a></li>
-            <li><a href="reservation.html" class="hover:text-gray-400">reservation</a></li>
-            <li><a href="regestration.html" class="hover:text-gray-400">regestration</a></li>
+            <li><a href="../views/reservation.php" class="hover:text-gray-400">reservation</a></li>
+            <li><a href="../views/regestration.php" class="hover:text-gray-400">regestration</a></li>
         </ul>
-        <a href="login.html" class="bg-yellow-500 text-gray-900 px-4 py-2 rounded">Login</a>
+        <a href="../views/login.php" class="bg-yellow-500 text-gray-900 px-4 py-2 rounded">Login</a>
     </nav>
 
     <!-- Hero Section -->
@@ -32,7 +32,7 @@
                     <p class="mt-6 text-gray-300">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
                 </div>
                 <div class="flex justify-center md:justify-end mt-6 md:mt-0">
-                    <img src="justice-blance.png" alt="Lawyer" class="w-3/4 rounded-lg shadow-lg">
+                    <img src="../images/justice-blance.png" alt="Lawyer" class="w-3/4 rounded-lg shadow-lg">
                 </div>
             </div>
         </div>
@@ -76,19 +76,19 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Team Member 1 -->
                 <div class="text-center">
-                    <img src="platt-mike-02156-web.jpg" alt="Team Member 1" class="w-48 h-48 rounded-full mx-auto shadow-lg">
+                    <img src="../images/platt-mike-02156-web.jpg" alt="Team Member 1" class="w-48 h-48 rounded-full mx-auto shadow-lg">
                     <h3 class="mt-4 text-2xl font-bold text-yellow-500">John Doe</h3>
                     <p class="mt-2 text-gray-300">Senior Attorney</p>
                 </div>
                 <!-- Team Member 2 -->
                 <div class="text-center">
-                    <img src="Sam-Sprangers-720x934.jpg" alt="Team Member 2" class="w-48 h-48 rounded-full mx-auto shadow-lg">
+                    <img src="../images/Sam-Sprangers-720x934.jpg" alt="Team Member 2" class="w-48 h-48 rounded-full mx-auto shadow-lg">
                     <h3 class="mt-4 text-2xl font-bold text-yellow-500">Jane Smith</h3>
                     <p class="mt-2 text-gray-300">Partner</p>
                 </div>
                 <!-- Team Member 3 -->
                 <div class="text-center">
-                    <img src="flawyer.avif" alt="Team Member 3" class="w-48 h-48 rounded-full mx-auto shadow-lg">
+                    <img src="../images/flawyer.avif" alt="Team Member 3" class="w-48 h-48 rounded-full mx-auto shadow-lg">
                     <h3 class="mt-4 text-2xl font-bold text-yellow-500">Michael Johnson</h3>
                     <p class="mt-2 text-gray-300">Associate Attorney</p>
                 </div>
@@ -101,9 +101,9 @@
         <div class="container mx-auto text-center">
             <p class="text-gray-500">&copy; 2024 Law Office. All rights reserved.</p>
             <div class="flex justify-center space-x-4 mt-4">
-                <a href="#" class="text-gray-500 hover:text-white"><img src="facebook (1).png" alt="icon1" class="w-6 h-6"><i class="fab fa-facebook-f"></i></a>
-                <a href="#" class="text-gray-500 hover:text-white"><img src="twitter (1).png" alt="icon2" class="w-6 h-6"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="text-gray-500 hover:text-white"><img src="instagram.png" alt="icon3" class="w-6 h-6"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="text-gray-500 hover:text-white"><img src="../images/facebook (1).png" alt="icon1" class="w-6 h-6"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="text-gray-500 hover:text-white"><img src="../images/twitter (1).png" alt="icon2" class="w-6 h-6"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="text-gray-500 hover:text-white"><img src="../images/instagram.png" alt="icon3" class="w-6 h-6"><i class="fab fa-instagram"></i></a>
             </div>
         </div>
     </footer>
