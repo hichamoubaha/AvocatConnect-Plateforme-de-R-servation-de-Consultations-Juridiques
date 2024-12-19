@@ -1,3 +1,60 @@
+<?php
+// Include database connection
+include('db.php');
+
+// Check if form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $nom = $_POST['nom'];
+    $prenom = $_POST['prenom'];
+    $email = $_POST['email'];
+    $telephone = $_POST['telephone'];
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // Secure password
+    $role = $_POST['role'];
+
+    // Prepare and bind for Users table
+    $stmt = $conn->prepare("INSERT INTO Users (nom, prenom, email, telephone, password, role) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssssss", $nom, $prenom, $email, $telephone, $password, $role);
+
+    if ($stmt->execute()) {
+        // Get the last inserted user ID
+        $user_id = $stmt->insert_id;
+
+        // If the user is an avocat, insert additional info into the Info table
+        if ($role == 'avocat') {
+            $photo = ''; // Default value, you can add logic for photo upload
+            $biographie = ''; // You can add biographie input field in the form
+            $coordonnee = ''; // Add additional input fields if necessary
+            $annee_experience = ''; // Add additional input fields if necessary
+            $specialite = ''; // Add additional input fields if necessary
+
+            // Prepare and bind for Info table
+            $info_stmt = $conn->prepare("INSERT INTO Info (photo, Biographie, coordonnee, annee_experience, specialite, user_id) VALUES (?, ?, ?, ?, ?, ?)");
+            $info_stmt->bind_param("sssssi", $photo, $biographie, $coordonnee, $annee_experience, $specialite, $user_id);
+
+            if ($info_stmt->execute()) {
+                // Redirect to login page with success message
+                header("Location: login.php?success=1");
+                exit();
+            } else {
+                $error = "Error inserting into Info table: " . $info_stmt->error;
+            }
+
+            $info_stmt->close();
+        } else {
+            // If the user is a client, just redirect to login
+            header("Location: login.php?success=1");
+            exit();
+        }
+    } else {
+        $error = "Error inserting into Users table: " . $stmt->error;
+    }
+
+    $stmt->close();
+}
+
+$conn->close();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,53 +70,34 @@
         <div class="text-lg font-bold">Law Office</div>
         <ul class="flex space-x-4">
             <li><a href="../views/index.php" class="hover:text-gray-400">Home</a></li>
-            <li><a href="../views/reservation.php" class="hover:text-gray-400">reservation</a></li>
-            <li><a href="../views/regestration.php" class="hover:text-gray-400">regestration</a></li>
+            <li><a href="#about-section" class="hover:text-gray-400">About</a></li>
+            <li><a href="../views/client_dashboard.php" class="hover:text-gray-400">Clients</a></li>
+            <li><a href="../views/registration.php" class="hover:text-gray-400">Registration</a></li>
+            <li><a href="../views/avocat_dashboard.php" class="hover:text-gray-400">Avocats</a></li>
         </ul>
         <a href="../views/login.php" class="bg-yellow-500 text-gray-900 px-4 py-2 rounded">Login</a>
     </nav>
+
+    <!-- Registration form -->
     <div class="min-h-screen flex items-center justify-center py-12 px-4">
         <div class="bg-gray-800 p-8 rounded-lg shadow-xl w-full max-w-md">
-            <div class="text-center mb-8">
-                <a href="index.html" class="text-white text-2xl font-bold flex items-center justify-center">
-                    <i class="fas fa-balance-scale mr-2"></i>
-                    Law Office
-                </a>
-            </div>
-            <form class="space-y-6">
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-[#C4A962] mb-2">First Name</label>
-                        <input type="text" class="w-full px-4 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-[#C4A962] focus:outline-none" required>
-                    </div>
-                    <div>
-                        <label class="block text-[#C4A962] mb-2">Last Name</label>
-                        <input type="text" class="w-full px-4 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-[#C4A962] focus:outline-none" required>
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-[#C4A962] mb-2">Email Address</label>
-                    <input type="email" class="w-full px-4 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-[#C4A962] focus:outline-none" required>
-                </div>
-                <div>
-                    <label class="block text-[#C4A962] mb-2">Phone Number</label>
-                    <input type="tel" class="w-full px-4 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-[#C4A962] focus:outline-none" required>
-                </div>
-                <div>
-                    <label class="block text-[#C4A962] mb-2">Password</label>
-                    <input type="password" class="w-full px-4 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-[#C4A962] focus:outline-none" required>
-                </div>
-                <div>
-                    <label class="block text-[#C4A962] mb-2">Confirm Password</label>
-                    <input type="password" class="w-full px-4 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-[#C4A962] focus:outline-none" required>
-                </div>
+            <h2 class="text-[#C4A962] text-2xl text-center">Register</h2>
+            <form method="POST" class="space-y-6">
+                <input type="text" name="nom" placeholder="First Name" class="w-full px-4 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-[#C4A962]" required>
+                <input type="text" name="prenom" placeholder="Last Name" class="w-full px-4 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-[#C4A962]" required>
+                <input type="email" name="email" placeholder="Email" class="w-full px-4 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-[#C4A962]" required>
+                <input type="tel" name="telephone" placeholder="Phone Number" class="w-full px-4 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-[#C4A962]" required>
+                <input type="password" name="password" placeholder="Password" class="w-full px-4 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-[#C4A962]" required>
+                <select name="role" class="w-full px-4 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-[#C4A962]" required>
+                    <option value="client">Client</option>
+                    <option value="avocat">Avocat</option>
+                </select>
                 <button type="submit" class="w-full bg-[#C4A962] text-white py-2 rounded hover:bg-[#d4b972] transition">
                     Register
                 </button>
-                <p class="text-center text-gray-300">
-                    Already have an account? 
-                    <a href="login.html" class="text-[#C4A962] hover:text-[#d4b972]">Login</a>
-                </p>
+                <?php if (isset($error)): ?>
+                    <div class="text-red-500 text-center mt-4"><?php echo $error; ?></div>
+                <?php endif; ?>
             </form>
         </div>
     </div>

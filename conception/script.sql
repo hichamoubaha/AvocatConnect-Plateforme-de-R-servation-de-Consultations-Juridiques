@@ -10,7 +10,7 @@ CREATE TABLE Users (
     prenom VARCHAR(50) NOT NULL,
     Email VARCHAR(100) NOT NULL UNIQUE,
     telephone VARCHAR(15) NOT NULL,
-    password VARCHAR(50) NOT NULL,
+    password VARCHAR(255) NOT NULL,
     role ENUM('client', 'avocat') NOT NULL
 );
 
