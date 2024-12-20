@@ -157,8 +157,8 @@ mysqli_close($conn);
                                 <p><strong>Status:</strong> <?php echo htmlspecialchars($avail['statut']); ?></p>
                             </div>
                             <div class="space-x-4">
-                                <a href="modify_availability.php?id=<?php echo $avail['disponibilite_ID']; ?>" class="text-yellow-500 hover:text-yellow-400">Modify</a>
-                                <a href="cancel_availability.php?id=<?php echo $avail['disponibilite_ID']; ?>" class="text-red-500 hover:text-red-400">Cancel</a>
+                            <a href="modify_availability.php?id=<?php echo $avail['disponibilite_ID']; ?>" class="text-yellow-500 hover:text-yellow-400">Modify</a>
+                             <a href="cancel_availability.php?id=<?php echo $avail['disponibilite_ID']; ?>" class="text-red-500 hover:text-red-400">Cancel</a>
                             </div>
                         </li>
                     <?php } ?>

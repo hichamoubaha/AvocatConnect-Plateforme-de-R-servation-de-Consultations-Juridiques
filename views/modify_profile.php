@@ -18,6 +18,14 @@ $info_sql = "SELECT * FROM Info WHERE user_id = '$user_id'";
 $info_result = mysqli_query($conn, $info_sql);
 $info = mysqli_fetch_assoc($info_result);
 
+// Get the avocat's current availability
+$availability_sql = "SELECT * FROM Disponibilites WHERE user_ID = '$user_id'";
+$availability_result = mysqli_query($conn, $availability_sql);
+$availabilities = [];
+while ($row = mysqli_fetch_assoc($availability_result)) {
+    $availabilities[] = $row;
+}
+
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
@@ -27,6 +35,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $coordinates = $_POST['coordinates'];
     $experience = $_POST['experience'];
     $specialty = $_POST['specialty'];
+    $availability_dates = $_POST['availability_dates'];
+    $availability_statuses = $_POST['availability_statuses'];
 
     // Update Users table
     $update_user_sql = "UPDATE Users SET Email = '$email', telephone = '$phone' WHERE User_ID = '$user_id'";
@@ -39,6 +49,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $insert_info_sql = "INSERT INTO Info (user_id, photo, Biographie, coordonnee, annee_experience, specialite) VALUES ('$user_id', '$photo', '$biography', '$coordinates', '$experience', '$specialty')";
         mysqli_query($conn, $insert_info_sql);
+    }
+
+    // Update Disponibilites table
+    // First, delete existing records for this user
+    $delete_availability_sql = "DELETE FROM Disponibilites WHERE user_ID = '$user_id'";
+    mysqli_query($conn, $delete_availability_sql);
+
+    // Insert new availability records
+    for ($i = 0; $i < count($availability_dates); $i++) {
+        $date = $availability_dates[$i];
+        $status = $availability_statuses[$i];
+        $insert_availability_sql = "INSERT INTO Disponibilites (user_ID, disponibilite_date, statut) VALUES ('$user_id', '$date', '$status')";
+        mysqli_query($conn, $insert_availability_sql);
     }
 
     header("Location: avocat_dashboard.php");
@@ -109,7 +132,25 @@ mysqli_close($conn);
                     <label for="specialty" class="block text-gray-300">Specialty</label>
                     <input type="text" name="specialty" id="specialty" class="w-full px-4 py-2 rounded bg-gray-800 text-white" value="<?php echo htmlspecialchars($info['specialite']); ?>">
                 </div>
-                <div class="mt-6">
+
+                <!-- Availability Section -->
+                <div class="mb-4">
+                    <h3 class="text-2xl font-bold text-yellow-500 mb-4">Availability</h3>
+                    <div id="availability-section">
+                        <?php foreach ($availabilities as $index => $availability): ?>
+                            <div class="mb-2 flex space-x-2">
+                                <input type="date" name="availability_dates[]" class="w-full px-4 py-2 rounded bg-gray-800 text-white" value="<?php echo htmlspecialchars($availability['disponibilite_date']); ?>" required>
+                                <select name="availability_statuses[]" class="w-full px-4 py-2 rounded bg-gray-800 text-white" required>
+                                    <option value="disponible" <?php if ($availability['statut'] == 'disponible') echo 'selected'; ?>>Disponible</option>
+                                    <option value="non-disponible" <?php if ($availability['statut'] == 'non-disponible') echo 'selected'; ?>>Non-Disponible</option>
+                                </select>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <button type="button" class="bg-yellow-500 text-gray-900 px-4 py-2 rounded mt-4" onclick="addAvailability()">Add Availability</button>
+                </div>
+
+                <div class="text-center">
                     <button type="submit" class="bg-yellow-500 text-gray-900 px-4 py-2 rounded">Save Changes</button>
                 </div>
             </form>
@@ -117,10 +158,38 @@ mysqli_close($conn);
     </div>
 </section>
 
-<!-- Footer -->
-<footer class="py-4 bg-gray-800 text-center">
-    <p class="text-gray-500">&copy; 2024 Law Office. All rights reserved.</p>
-</footer>
+<script>
+function addAvailability() {
+    const availabilitySection = document.getElementById('availability-section');
+    const availabilityDiv = document.createElement('div');
+    availabilityDiv.classList.add('mb-2', 'flex', 'space-x-2');
+
+    const dateInput = document.createElement('input');
+    dateInput.type = 'date';
+    dateInput.name = 'availability_dates[]';
+    dateInput.classList.add('w-full', 'px-4', 'py-2', 'rounded', 'bg-gray-800', 'text-white');
+    dateInput.required = true;
+
+    const statusSelect = document.createElement('select');
+    statusSelect.name = 'availability_statuses[]';
+    statusSelect.classList.add('w-full', 'px-4', 'py-2', 'rounded', 'bg-gray-800', 'text-white');
+    statusSelect.required = true;
+
+    const option1 = document.createElement('option');
+    option1.value = 'disponible';
+    option1.textContent = 'Disponible';
+    statusSelect.appendChild(option1);
+
+    const option2 = document.createElement('option');
+    option2.value = 'non-disponible';
+    option2.textContent = 'Non-Disponible';
+    statusSelect.appendChild(option2);
+
+    availabilityDiv.appendChild(dateInput);
+    availabilityDiv.appendChild(statusSelect);
+    availabilitySection.appendChild(availabilityDiv);
+}
+</script>
 
 </body>
 </html>
