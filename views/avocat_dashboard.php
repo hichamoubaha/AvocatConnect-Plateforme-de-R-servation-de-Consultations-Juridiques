@@ -72,30 +72,35 @@ mysqli_close($conn);
 
 <!-- User Info Section -->
 <section class="py-16 bg-gray-800">
-    <div class="container mx-auto px-4">
-        <div class="text-center mb-12">
+    <div class="container mx-auto px-4 text-center">
+        <div class="mb-12">
             <h2 class="text-4xl font-bold text-yellow-500">Welcome, <?php echo htmlspecialchars($user_info['nom'] . ' ' . $user_info['prenom']); ?>!</h2>
             <p class="mt-4 text-gray-300">Your personal information and reservation history.</p>
         </div>
 
-        <div class="max-w-lg mx-auto bg-gray-700 p-8 rounded-lg">
-            <h3 class="text-2xl font-bold text-yellow-500 mb-6">Your Personal Information</h3>
-            <p><strong>Email:</strong> <?php echo htmlspecialchars($user_info['Email']); ?></p>
-            <p><strong>Phone:</strong> <?php echo htmlspecialchars($user_info['telephone']); ?></p>
-            <p><strong>Role:</strong> <?php echo htmlspecialchars($user_info['role']); ?></p>
-            
+        <div class="max-w-lg mx-auto bg-gray-700 p-8 rounded-lg shadow-lg">
+            <h3 class="text-2xl font-semibold text-yellow-500 mb-6">Your Personal Information</h3>
+
             <!-- Display profile info from Info table -->
             <?php if ($info): ?>
-                <p><strong>Photo:</strong> <img src="<?php echo htmlspecialchars($info['photo']); ?>" alt="Profile Photo"></p>
-                <p><strong>Biography:</strong> <?php echo htmlspecialchars($info['Biographie']); ?></p>
-                <p><strong>Coordinates:</strong> <?php echo htmlspecialchars($info['coordonnee']); ?></p>
-                <p><strong>Experience:</strong> <?php echo htmlspecialchars($info['annee_experience']); ?></p>
-                <p><strong>Speciality:</strong> <?php echo htmlspecialchars($info['specialite']); ?></p>
+                <div class="mb-6">
+                    <img src="<?php echo htmlspecialchars($info['photo']); ?>" alt="Profile Photo" class="rounded-full w-40 h-40 mx-auto mb-6">
+                </div>
+                <p><strong>Email:</strong> <?php echo htmlspecialchars($user_info['Email']); ?></p>
+                <p><strong>Phone:</strong> <?php echo htmlspecialchars($user_info['telephone']); ?></p>
+                <p><strong>Role:</strong> <?php echo htmlspecialchars($user_info['role']); ?></p>
+
+                <div class="mt-4">
+                    <p><strong>Biography:</strong> <?php echo htmlspecialchars($info['Biographie']); ?></p>
+                    <p><strong>Coordinates:</strong> <?php echo htmlspecialchars($info['coordonnee']); ?></p>
+                    <p><strong>Experience:</strong> <?php echo htmlspecialchars($info['annee_experience']); ?> years</p>
+                    <p><strong>Specialty:</strong> <?php echo htmlspecialchars($info['specialite']); ?></p>
+                </div>
             <?php endif; ?>
-            
+
             <!-- Modify Personal Info -->
             <div class="mt-6">
-                <a href="../views/modify_profile.php" class="text-yellow-500 hover:text-yellow-400">Modify Your Personal Information</a>
+                <a href="../views/modify_profile.php" class="text-yellow-500 hover:text-yellow-400 transition-colors">Modify Your Personal Information</a>
             </div>
         </div>
     </div>
@@ -170,31 +175,37 @@ mysqli_close($conn);
     <div class="container mx-auto px-4">
         <div class="text-center mb-12">
             <h2 class="text-4xl font-bold text-yellow-500">Your Statistics</h2>
-            <p class="mt-4 text-gray-300">Overview of your reservation activities and upcoming clients.</p>
+            <p class="mt-4 text-gray-300">Here are some key statistics about your activity.</p>
         </div>
 
         <div class="bg-gray-700 p-8 rounded-lg">
-            <h3 class="text-2xl font-bold text-yellow-500 mb-6">Reservation Statistics</h3>
-            <p><strong>Pending Reservations:</strong> <?php echo $pending_reservations_count; ?></p>
-            <p><strong>Approved Reservations Today:</strong> <?php echo $approved_today_count; ?></p>
-            <p><strong>Approved Reservations Tomorrow:</strong> <?php echo $approved_tomorrow_count; ?></p>
+            <div class="flex justify-between mb-4">
+                <div class="text-center">
+                    <h3 class="text-2xl font-semibold text-yellow-500">Pending Reservations</h3>
+                    <p class="text-3xl"><?php echo $pending_reservations_count; ?></p>
+                </div>
+                <div class="text-center">
+                    <h3 class="text-2xl font-semibold text-yellow-500">Approved Today</h3>
+                    <p class="text-3xl"><?php echo $approved_today_count; ?></p>
+                </div>
+                <div class="text-center">
+                    <h3 class="text-2xl font-semibold text-yellow-500">Approved Tomorrow</h3>
+                    <p class="text-3xl"><?php echo $approved_tomorrow_count; ?></p>
+                </div>
+            </div>
 
-            <?php if ($next_client): ?>
-                <h3 class="text-2xl font-bold text-yellow-500 mt-8 mb-6">Next Client</h3>
-                <p><strong>Name:</strong> <?php echo htmlspecialchars($next_client['client_name']); ?></p>
-                <p><strong>Date:</strong> <?php echo htmlspecialchars($next_client['reservation_date']); ?></p>
-                <p><strong>Status:</strong> <?php echo htmlspecialchars($next_client['statut']); ?></p>
-            <?php else: ?>
-                <p class="text-gray-300">No upcoming clients.</p>
-            <?php endif; ?>
+            <div class="mt-6 text-center">
+                <h3 class="text-2xl font-semibold text-yellow-500">Next Client</h3>
+                <?php if ($next_client): ?>
+                    <p><strong>Date:</strong> <?php echo htmlspecialchars($next_client['reservation_date']); ?></p>
+                    <p><strong>Status:</strong> <?php echo htmlspecialchars($next_client['statut']); ?></p>
+                <?php else: ?>
+                    <p>No upcoming clients.</p>
+                <?php endif; ?>
+            </div>
         </div>
     </div>
 </section>
-
-<!-- Footer -->
-<footer class="py-4 bg-gray-800 text-center">
-    <p class="text-gray-500">&copy; 2024 Law Office. All rights reserved.</p>
-</footer>
 
 </body>
 </html>
