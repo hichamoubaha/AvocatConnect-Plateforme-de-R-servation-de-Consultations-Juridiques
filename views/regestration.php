@@ -72,7 +72,7 @@ $conn->close();
             <li><a href="../views/index.php" class="hover:text-gray-400">Home</a></li>
             <li><a href="#about-section" class="hover:text-gray-400">About</a></li>
             <li><a href="../views/client_dashboard.php" class="hover:text-gray-400">Clients</a></li>
-            <li><a href="../views/registration.php" class="hover:text-gray-400">Registration</a></li>
+            <li><a href="../views/regestration.php" class="hover:text-gray-400">Registration</a></li>
             <li><a href="../views/avocat_dashboard.php" class="hover:text-gray-400">Avocats</a></li>
         </ul>
         <a href="../views/login.php" class="bg-yellow-500 text-gray-900 px-4 py-2 rounded">Login</a>

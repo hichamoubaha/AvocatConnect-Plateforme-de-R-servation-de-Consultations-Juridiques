@@ -39,7 +39,9 @@ CREATE TABLE Disponibilites (
 CREATE TABLE Reservations (
     reservation_ID INT(11) AUTO_INCREMENT PRIMARY KEY,
     user_ID INT(11),
+    disponibilite_ID INT(11),
     reservation_date DATETIME NOT NULL,
     statut ENUM('en attente', 'confirmee', 'annulee') NOT NULL,
-    FOREIGN KEY (user_ID) REFERENCES Users(User_ID)
+    FOREIGN KEY (user_ID) REFERENCES Users(User_ID),
+    FOREIGN KEY (disponibilite_ID) REFERENCES Disponibilites(disponibilite_ID)
 );
