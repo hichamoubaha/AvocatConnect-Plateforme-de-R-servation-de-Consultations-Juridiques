@@ -100,7 +100,7 @@ mysqli_close($conn);
 
             <!-- Modify Personal Info -->
             <div class="mt-6">
-                <a href="../views/modify_profile.php" class="text-yellow-500 hover:text-yellow-400 transition-colors">Modify Your Personal Information</a>
+                <a href="../views/modify_avocat.php" class="text-yellow-500 hover:text-yellow-400 transition-colors">Modify Your Personal Information</a>
             </div>
         </div>
     </div>

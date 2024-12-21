@@ -12,21 +12,31 @@ if (isset($_GET['avocat_id']) && isset($_GET['disponibilite_id'])) {
     $client_id = $_SESSION['user_id']; // Assuming the client's user ID is stored in the session
     $avocat_id = $_GET['avocat_id'];
     $disponibilite_id = $_GET['disponibilite_id'];
-    $reservation_date = date('Y-m-d H:i:s');
-    $statut = 'en attente';
 
-    // Insert reservation into the Reservations table
-    $insert_sql = "INSERT INTO Reservations (user_ID, disponibilite_ID, reservation_date, statut)
-                   VALUES ('$client_id', '$disponibilite_id', '$reservation_date', '$statut')";
+    // Fetch the date from the Disponibilites table
+    $date_sql = "SELECT disponibilite_date FROM Disponibilites WHERE disponibilite_ID = '$disponibilite_id' AND user_ID = '$avocat_id' AND statut = 'disponible'";
+    $date_result = mysqli_query($conn, $date_sql);
+    $date_row = mysqli_fetch_assoc($date_result);
 
-    if (mysqli_query($conn, $insert_sql)) {
-        // Update the availability status to 'reserve'
-        $update_sql = "UPDATE Disponibilites SET statut = 'reserve' WHERE disponibilite_ID = '$disponibilite_id'";
-        mysqli_query($conn, $update_sql);
+    if ($date_row) {
+        $reservation_date = $date_row['disponibilite_date'];
+        $statut = 'en attente';
 
-        header("Location: client_dashboard.php?message=Reservation successful");
+        // Insert reservation into the Reservations table
+        $insert_sql = "INSERT INTO Reservations (user_ID, disponibilite_ID, reservation_date, statut)
+                       VALUES ('$client_id', '$disponibilite_id', '$reservation_date', '$statut')";
+
+        if (mysqli_query($conn, $insert_sql)) {
+            // Update the availability status to 'reserve'
+            $update_sql = "UPDATE Disponibilites SET statut = 'reserve' WHERE disponibilite_ID = '$disponibilite_id'";
+            mysqli_query($conn, $update_sql);
+
+            header("Location: client_dashboard.php?message=Reservation successful");
+        } else {
+            echo "Error: " . mysqli_error($conn);
+        }
     } else {
-        echo "Error: " . mysqli_error($conn);
+        header("Location: client_dashboard.php?message=Invalid request");
     }
 } else {
     header("Location: client_dashboard.php?message=Invalid request");
