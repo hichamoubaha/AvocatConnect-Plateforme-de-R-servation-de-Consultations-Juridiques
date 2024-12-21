@@ -27,23 +27,6 @@ $info_sql = "SELECT * FROM Info WHERE user_id = '$user_id'";
 $info_result = mysqli_query($conn, $info_sql);
 $info = mysqli_fetch_assoc($info_result);
 
-// Calculate statistics
-$pending_reservations_sql = "SELECT COUNT(*) AS count FROM Reservations WHERE user_ID = '$user_id' AND statut = 'en attente'";
-$pending_reservations_result = mysqli_query($conn, $pending_reservations_sql);
-$pending_reservations_count = mysqli_fetch_assoc($pending_reservations_result)['count'];
-
-$approved_today_sql = "SELECT COUNT(*) AS count FROM Reservations WHERE user_ID = '$user_id' AND statut = 'confirmee' AND DATE(reservation_date) = CURDATE()";
-$approved_today_result = mysqli_query($conn, $approved_today_sql);
-$approved_today_count = mysqli_fetch_assoc($approved_today_result)['count'];
-
-$approved_tomorrow_sql = "SELECT COUNT(*) AS count FROM Reservations WHERE user_ID = '$user_id' AND statut = 'confirmee' AND DATE(reservation_date) = CURDATE() + INTERVAL 1 DAY";
-$approved_tomorrow_result = mysqli_query($conn, $approved_tomorrow_sql);
-$approved_tomorrow_count = mysqli_fetch_assoc($approved_tomorrow_result)['count'];
-
-$next_client_sql = "SELECT * FROM Reservations WHERE user_ID = '$user_id' AND statut = 'confirmee' ORDER BY reservation_date ASC LIMIT 1";
-$next_client_result = mysqli_query($conn, $next_client_sql);
-$next_client = mysqli_fetch_assoc($next_client_result);
-
 mysqli_close($conn);
 ?>
 
@@ -166,43 +149,6 @@ mysqli_close($conn);
             <?php else: ?>
                 <p class="text-gray-300">You have not set any availability yet.</p>
             <?php endif; ?>
-        </div>
-    </div>
-</section>
-
-<!-- Statistics Section -->
-<section class="py-16 bg-gray-900">
-    <div class="container mx-auto px-4">
-        <div class="text-center mb-12">
-            <h2 class="text-4xl font-bold text-yellow-500">Your Statistics</h2>
-            <p class="mt-4 text-gray-300">Here are some key statistics about your activity.</p>
-        </div>
-
-        <div class="bg-gray-700 p-8 rounded-lg">
-            <div class="flex justify-between mb-4">
-                <div class="text-center">
-                    <h3 class="text-2xl font-semibold text-yellow-500">Pending Reservations</h3>
-                    <p class="text-3xl"><?php echo $pending_reservations_count; ?></p>
-                </div>
-                <div class="text-center">
-                    <h3 class="text-2xl font-semibold text-yellow-500">Approved Today</h3>
-                    <p class="text-3xl"><?php echo $approved_today_count; ?></p>
-                </div>
-                <div class="text-center">
-                    <h3 class="text-2xl font-semibold text-yellow-500">Approved Tomorrow</h3>
-                    <p class="text-3xl"><?php echo $approved_tomorrow_count; ?></p>
-                </div>
-            </div>
-
-            <div class="mt-6 text-center">
-                <h3 class="text-2xl font-semibold text-yellow-500">Next Client</h3>
-                <?php if ($next_client): ?>
-                    <p><strong>Date:</strong> <?php echo htmlspecialchars($next_client['reservation_date']); ?></p>
-                    <p><strong>Status:</strong> <?php echo htmlspecialchars($next_client['statut']); ?></p>
-                <?php else: ?>
-                    <p>No upcoming clients.</p>
-                <?php endif; ?>
-            </div>
         </div>
     </div>
 </section>
